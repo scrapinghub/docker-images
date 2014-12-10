@@ -6,3 +6,4 @@ RUN apt-get update -qq
 RUN apt-get install -qy --no-install-recommends zabbix-server-mysql
 ADD run.sh /run.sh
 CMD ["/run.sh"]
+EXPOSE 10051
