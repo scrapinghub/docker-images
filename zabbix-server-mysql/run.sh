@@ -8,6 +8,4 @@ chown -R zabbix:zabbix $piddir
 
 /usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
 
-trap "pkill -F $pidfile" INT TERM EXIT
-
 tail -f /var/log/zabbix/zabbix_server.log --pid=$(cat $pidfile)
