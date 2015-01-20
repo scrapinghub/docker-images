@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+CONFIG_FILE=/etc/ganglia/gmetad.conf
+if [[ $DEFAULT_CONFIG_FILE ]]; then
+    CONFIG_FILE=$DEFAULT_CONFIG_FILE
+fi
+
+while true ; do
+  case "$1" in
+
+    --config)
+      shift
+      CONFIG_FILE=$1
+      shift
+      ;;
+
+    "")
+      break
+      ;;
+
+  esac
+done
+
+service apache2 restart
+
+echo "Using configuration file: $CONFIG_FILE"
+
+# Start gmetad service on foreground
+gmetad -d 1 -p /var/run/gmetad.pid -c $CONFIG_FILE
