@@ -27,4 +27,4 @@ service apache2 restart
 echo "Using configuration file: $CONFIG_FILE"
 
 # Start gmetad service on foreground
-gmetad -d 1 -p /var/run/gmetad.pid -c $CONFIG_FILE
+gmetad -d 5 -p /var/run/gmetad.pid -c $CONFIG_FILE
