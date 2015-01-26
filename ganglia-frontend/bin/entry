@@ -22,6 +22,9 @@ while true ; do
   esac
 done
 
+# Avoid: "Please make sure that /var/lib/ganglia/rrds is owned by nobody"
+chown -R nobody:nobody /var/lib/ganglia/rrds
+
 service apache2 restart
 
 echo "Using configuration file: $CONFIG_FILE"
