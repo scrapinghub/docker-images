@@ -17,4 +17,8 @@ To set a custom gmetad.conf file via `--config` argument:
 
     docker run scrapinghub/ganglia-frontend --config /mnt/gmetad.conf
 
+To set a custom debug mode for gmetad, use `--debug` argument:
+
+    docker run scrapinghub/ganglia-frontend --debug 9
+
 > Note: Environment variable overrides default config file value, the `--config` argument overrides all other values.

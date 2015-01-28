@@ -1,7 +1,11 @@
 #!/bin/bash
 set -e
 
+# By default, no debug info
+DEBUG_MODE=1
+# Default config file
 CONFIG_FILE=/etc/ganglia/gmetad.conf
+
 if [[ $DEFAULT_CONFIG_FILE ]]; then
     CONFIG_FILE=$DEFAULT_CONFIG_FILE
 fi
@@ -12,6 +16,12 @@ while true ; do
     --config)
       shift
       CONFIG_FILE=$1
+      shift
+      ;;
+
+    --debug)
+      shift
+      DEBUG_MODE=$1
       shift
       ;;
 
@@ -30,4 +40,4 @@ service apache2 restart
 echo "Using configuration file: $CONFIG_FILE"
 
 # Start gmetad service on foreground
-gmetad -d 5 -p /var/run/gmetad.pid -c $CONFIG_FILE
+gmetad -d $DEBUG_MODE -p /var/run/gmetad.pid -c $CONFIG_FILE
