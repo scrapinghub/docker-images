@@ -7,5 +7,8 @@ mkdir -p $piddir $logdir
 touch $logfile
 chown -R zabbix:zabbix $piddir $logfile
 /etc/init.d/zabbix-java-gateway start
-sleep 1
+while [ ! -f $pidfile ]
+do
+  sleep 1
+done
 tail -f $logfile --pid=$(cat $pidfile)
