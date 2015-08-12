@@ -1,0 +1,7 @@
+#!/bin/bash
+set -x
+
+CONSUL_CONFIG=${1:-/etc/consul-template}
+
+# Start consul-template service
+consul-template -config=$CONSUL_CONFIG
