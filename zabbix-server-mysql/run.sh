@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PIDFILE=/var/run/zabbix/zabbix_server.pid
-PIDDIR=$(dirname $pidfile)
+PIDDIR=${PIDDIR:-/var/run/zabbix}
+PIDFILE=${PIDFILE:-$PIDDIR/zabbix_server.pid}
 CFGFILE=${CFGFILE:-/etc/zabbix/zabbix_server.conf}
 
 mkdir -p $PIDDIR
