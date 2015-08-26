@@ -1,11 +1,16 @@
 #!/bin/bash
 
-pidfile=/var/run/zabbix/zabbix_server.pid
-piddir=$(dirname $pidfile)
+PIDFILE=/var/run/zabbix/zabbix_server.pid
+PIDDIR=$(dirname $pidfile)
+CFGFILE=${CFGFILE:-/etc/zabbix/zabbix_server.conf}
 
-mkdir -p $piddir
-chown -R zabbix:zabbix $piddir
+mkdir -p $PIDDIR
+chown -R zabbix:zabbix $PIDDIR
 
-/usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+/usr/sbin/zabbix_server -c $CFGFILE
 
-tail -f /var/log/zabbix/zabbix_server.log --pid=$(cat $pidfile)
+sleep 5
+tail -f /var/log/zabbix/zabbix_server.log --pid=$(cat $PIDFILE)
+
+# Provide some time in case something needs to be debugged
+sleep 30
