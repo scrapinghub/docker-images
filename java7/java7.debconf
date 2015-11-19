@@ -1,0 +1,4 @@
+debconf shared/accepted-oracle-license-v1-1 select true
+debconf shared/accepted-oracle-license-v1-1 seen true
+oracle-java7-installer oracle-java7-installer/local string /var/cache/apt/archives
+oracle-java7-installer oracle-java7-installer/local seen true
