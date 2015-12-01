@@ -5,6 +5,10 @@ PIDFILE=${PIDFILE:-$PIDDIR/zabbix_server.pid}
 CFGFILE=${CFGFILE:-/etc/zabbix/zabbix_server.conf}
 LOGFILE=${LOGFILE:-/var/log/zabbix/zabbix_server.log}
 
+if [[ ${INIT_SCRIPT} ]]; then
+    source ${INIT_SCRIPT}
+fi
+
 mkdir -p $PIDDIR
 chown -R zabbix:zabbix $PIDDIR
 
