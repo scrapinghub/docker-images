@@ -1,0 +1,6 @@
+FROM java:7
+RUN wget -qO /opentsdb.deb https://github.com/OpenTSDB/opentsdb/releases/download/v2.2.0RC3/opentsdb-2.2.0RC3_all.deb && \
+    dpkg --install /opentsdb.deb && \
+    rm /opentsdb.deb && \
+    ln -sf /usr/share/opentsdb/bin/tsdb /usr/bin/
+CMD ["tsdb", "tsd"]
