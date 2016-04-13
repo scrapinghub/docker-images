@@ -1,13 +1,15 @@
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 ENV DEBIAN_FRONTEND noninteractive
 
-# Accept oracle license in debconf
-ADD java7.debconf /tmp/java7.debconf
-# Add webupdate8 apt repo
-ADD java7.list /etc/apt/sources.list.d/java7.list
-# Add webupdate8 signing key
+# Setup Java
+# ==========
+
+# Add webupdate8 apt repo & signing key
+ADD ./java7.list /etc/apt/sources.list.d/java7.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7B2C3B0889BF5709A105D03AC2518248EEA14886
 
+# Accept oracle license in debconf
+ADD ./java7.debconf /tmp/java7.debconf
 RUN cat /tmp/java7.debconf |debconf-set-selections
 
 # Install Oracle Java7
