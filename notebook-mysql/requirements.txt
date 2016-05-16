@@ -1,0 +1,2 @@
+https://github.com/scrapinghub/pgcontents/archive/mysql.zip#egg=pgcontents
+https://github.com/mysql/mysql-connector-python/archive/2.0.4.zip#egg=mysql-connector-python
