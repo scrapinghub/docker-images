@@ -34,5 +34,9 @@ RUN apt-get update -qq && \
     apt-get install -y mesos=0.27.2-2.0.15.ubuntu1404 && \
     rm -rf /var/lib/apt/lists
 
+RUN curl -q -o - http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz \
+    | tar xzf - -C /usr/local/ \
+    && ln -sf /usr/local/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
+
 COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 COPY spark-env.sh /opt/spark/conf/spark-env.sh
