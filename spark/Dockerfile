@@ -7,7 +7,6 @@ WORKDIR /opt/spark
 ENV SPARK_HOME=/opt/spark \
     PYSPARK_PYTHON=/usr/bin/python \
     MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so \
-    HADOOP_CONF_DIR=/etc/hadoop/conf \
     PYTHONPATH=/opt/spark/python:/opt/spark/python/lib/py4j-0.9-src.zip
 
 RUN apt-get update -qq && \
@@ -38,5 +37,4 @@ RUN curl -q -o - http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apac
     | tar xzf - -C /usr/local/ \
     && ln -sf /usr/local/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
 
-COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 COPY spark-env.sh /opt/spark/conf/spark-env.sh
