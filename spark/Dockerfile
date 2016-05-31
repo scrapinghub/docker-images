@@ -33,6 +33,19 @@ RUN apt-get update -qq && \
     apt-get install -y mesos=0.27.2-2.0.15.ubuntu1404 && \
     rm -rf /var/lib/apt/lists
 
+RUN apt-get update -qq && \
+    apt-get install -qy \
+        build-essential python-dev \
+        libxml2-dev libssl-dev libxslt1-dev \
+        libmysqlclient-dev \
+        libpq-dev \
+        libevent-dev \
+        libffi-dev libssl-dev \
+        libpcre3-dev libz-dev \
+        libjpeg8-dev \
+        && \
+    rm -rf /var/lib/apt/lists
+
 RUN curl -q -o - http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz \
     | tar xzf - -C /usr/local/ \
     && ln -sf /usr/local/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
