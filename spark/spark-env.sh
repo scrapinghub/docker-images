@@ -4,3 +4,7 @@
 # Copy it as spark-env.sh and edit that to configure Spark for your site.
 
 export MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
+
+if [[ -e /mnt/mesos/sandbox/spark-env.sh ]]; then
+    . /mnt/mesos/sandbox/spark-env.sh
+fi
