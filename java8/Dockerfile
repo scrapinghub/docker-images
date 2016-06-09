@@ -15,21 +15,30 @@ RUN curl -q -o - http://www.eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apac
     | tar xzf - -C /usr/local/ \
     && ln -sf /usr/local/apache-maven-3.3.9/bin/mvn /usr/bin/mvn
 
-RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python /tmp/get-pip.py && \
-    rm -f /tmp/get-pip.py && \
-    pip install -U wheel && \
-    pip install ipython
-
 RUN apt-get update -qq && \
     apt-get install -qy \
-        build-essential python-dev \
-        libxml2-dev libssl-dev libxslt1-dev \
-        libmysqlclient-dev \
-        libpq-dev \
+        build-essential \
+        git \
         libevent-dev \
-        libffi-dev libssl-dev \
-        libpcre3-dev libz-dev \
+        libffi-dev \
+        libfreetype6-dev \
         libjpeg8-dev \
+        libmysqlclient-dev \
+        libpcre3-dev \
+        libpq-dev \
+        libssl-dev \
+        libssl-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        libz-dev \
+        pkg-config \
+        python-dev \
         && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    python /tmp/get-pip.py && \
+    rm -rf /tmp/get-pip.py && \
+    pip install --no-cache-dir -U wheel && \
+    pip install --no-cache-dir requests[security]==2.10.0 && \
+    rm -rf ~/.cache/pip

@@ -19,5 +19,4 @@ RUN apt-get update -qq && \
 RUN mkdir -p /etc/hadoop/conf
 ADD core-site.xml hdfs-site.xml /etc/hadoop/conf/
 
-COPY spark-env.sh /opt/spark/conf/spark-env.sh
-COPY spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+ADD spark-env.sh spark-defaults.conf /opt/spark/conf/
