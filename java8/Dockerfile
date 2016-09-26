@@ -42,3 +42,13 @@ RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
     pip install --no-cache-dir -U wheel && \
     pip install --no-cache-dir requests[security]==2.10.0 && \
     rm -rf ~/.cache/pip
+
+RUN apt-get update -qq && \
+    apt-get install -y python3.4 python3.4-dev libpython3.4-dev && \
+    cp -a /usr/local/bin/pip /tmp/pip2 && \
+    curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
+    python3 /tmp/get-pip.py && \
+    cp -a /usr/local/bin/pip /usr/local/bin/pip3 && \
+    cp -a /tmp/pip2 /usr/local/bin/pip && \
+    cp -a /tmp/pip2 /usr/local/bin/pip2 && \
+    rm -f /tmp/get-pip.py /tmp/pip2
