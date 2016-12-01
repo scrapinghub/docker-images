@@ -8,11 +8,11 @@ ENV SPARK_HOME=/opt/spark \
     PYTHONPATH=/opt/spark/python:/opt/spark/python/lib/py4j-0.10.3-src.zip
 
 RUN mkdir -p /opt/spark && \
-    curl -s -o - http://www.apache.org/dist/spark/spark-2.0.1/spark-2.0.1-bin-hadoop2.6.tgz \
+    curl -sSL -o - http://d3kbcqa49mib13.cloudfront.net/spark-2.0.2-bin-hadoop2.6.tgz \
          | tar xzf - --strip-components=1 -C /opt/spark
 
 RUN apt-get update -qq && \
-    apt-get install -y mesos=0.27.2-2.0.15.ubuntu1404 && \
+    apt-get install -y mesos=1.0.1-2.0.93.ubuntu1404 && \
     rm -rf /var/lib/apt/lists
 
 RUN mkdir -p /etc/hadoop/conf
