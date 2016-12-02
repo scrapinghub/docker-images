@@ -12,9 +12,7 @@ RUN mkdir -p /opt/spark && \
          | tar xzf - --strip-components=1 -C /opt/spark && \
     apt-get update -qq && \
     apt-get install -y mesos=1.0.1-2.0.93.ubuntu1404 && \
-    rm -rf /var/lib/apt/lists
+    mkdir -p /etc/hadoop/conf
 
-RUN mkdir -p /etc/hadoop/conf
 ADD core-site.xml hdfs-site.xml /etc/hadoop/conf/
-
 ADD spark-env.sh spark-defaults.conf /opt/spark/conf/
