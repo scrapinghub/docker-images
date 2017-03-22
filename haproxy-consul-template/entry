@@ -3,5 +3,7 @@ set -x
 
 CONSUL_CONFIG=${1:-/etc/consul-template}
 
+/usr/local/bin/filterproxy -v -l $PORT_8050 -r localhost:$PORT_8051 > /mnt/mesos/sandbox/filterproxy.log 2>&1 &
+
 # Start consul-template service
 consul-template -config=$CONSUL_CONFIG

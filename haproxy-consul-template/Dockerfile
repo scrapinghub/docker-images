@@ -22,6 +22,8 @@ RUN deps='curl ca-certificates' && \
     mkdir -p /etc/consul-template && \
     apt-get purge -y --auto-remove $deps
 
+RUN curl -o /usr/local/bin/filterproxy https://s3.amazonaws.com/scrapinghub-app-splash/filterproxy
+
 # Start script
 ADD entry entry
 ENTRYPOINT ["bash", "entry"]
