@@ -3,7 +3,7 @@ set -x
 
 CONSUL_CONFIG=${1:-/etc/consul-template}
 
-/usr/local/bin/filterproxy -l :$PORT_8050 -r localhost:$PORT_8051
+/usr/local/bin/filterproxy -l :$PORT_8050 -r localhost:$PORT_8051 &
 
 # Start consul-template service
 consul-template -config=$CONSUL_CONFIG
