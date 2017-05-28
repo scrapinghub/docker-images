@@ -1,4 +1,4 @@
-FROM python:2.7-slim
+FROM python:2.7
 
 # Add user and group to run process
 RUN groupadd -r elastalert && useradd -r -m -g elastalert elastalert
