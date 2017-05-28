@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:2.7-slim
 
 # Add user and group to run process
 RUN groupadd -r elastalert && useradd -r -m -g elastalert elastalert
@@ -25,12 +25,12 @@ RUN deps='gcc python-dev unzip' && \
     apt-get install -y --no-install-recommends $deps && \
     rm -rf /var/lib/apt/lists/* && \
 
-    # Download support_es5 branch since it hasn't been merged to master
-    wget 'https://github.com/Yelp/elastalert/archive/support_es5.zip' && \
-    unzip support_es5.zip && \
+    # Download master branch
+    wget 'https://github.com/Yelp/elastalert/archive/master.zip' && \
+    unzip master.zip && \
 
     # Install elastalert
-    mv elastalert-support_es5 /opt/elastalert && \
+    mv elastalert-master /opt/elastalert && \
     pip install -r /opt/elastalert/requirements.txt && \
     python /opt/elastalert/setup.py install && \
 
