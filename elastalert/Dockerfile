@@ -26,11 +26,11 @@ RUN deps='gcc python-dev unzip' && \
     rm -rf /var/lib/apt/lists/* && \
 
     # Download master branch
-    wget 'https://github.com/Yelp/elastalert/archive/v0.1.28.zip' && \
-    unzip v0.1.28.zip && \
+    wget 'https://github.com/Yelp/elastalert/archive/v0.1.30.zip' && \
+    unzip v0.1.30.zip && \
 
     # Install elastalert
-    mv elastalert-0.1.28 /opt/elastalert && \
+    mv elastalert-0.1.30 /opt/elastalert && \
     pip install -r /opt/elastalert/requirements.txt && \
     python /opt/elastalert/setup.py install && \
 
