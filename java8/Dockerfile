@@ -45,7 +45,6 @@ RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
 
 RUN apt-get update -qq && \
     apt-get install -qy software-properties-common && \
-    apt-get update -qq && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     apt-get update -qq && \
     apt-get install -qy python3.6 && \
