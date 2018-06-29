@@ -44,11 +44,18 @@ RUN curl -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
     rm -rf ~/.cache/pip
 
 RUN apt-get update -qq && \
-    apt-get install -y python3.4 python3.4-dev libpython3.4-dev && \
+    apt-get install -qy software-properties-common && \
+    apt-get update -qq && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    apt-get update -qq && \
+    apt-get install -qy python3.6 && \
+    cp -a /usr/bin/python3.6 /usr/bin/python3 && \
     cp -a /usr/local/bin/pip /tmp/pip2 && \
     curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    python3 /tmp/get-pip.py && \
+    python3.6 /tmp/get-pip.py && \
     cp -a /usr/local/bin/pip /usr/local/bin/pip3 && \
     cp -a /tmp/pip2 /usr/local/bin/pip && \
     cp -a /tmp/pip2 /usr/local/bin/pip2 && \
-    rm -f /tmp/get-pip.py /tmp/pip2
+    rm -f /tmp/get-pip.py /tmp/pip2 && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives && \
+    pip3 install pipenv
