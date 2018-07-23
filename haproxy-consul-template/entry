@@ -6,4 +6,4 @@ CONSUL_CONFIG=${1:-/etc/consul-template}
 /usr/local/bin/filterproxy -l :$PORT_8050 -r localhost:$PORT_8051 &
 
 # Start consul-template service
-consul-template -config=$CONSUL_CONFIG
+/usr/local/bin/consul-template -config=$CONSUL_CONFIG
