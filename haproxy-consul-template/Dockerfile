@@ -25,5 +25,8 @@ RUN deps='curl ca-certificates' && \
     apt-get purge -y --auto-remove $deps
 
 # Start script
-ADD entry entry
-ENTRYPOINT ["bash", "entry"]
+#ADD entry entry
+#ENTRYPOINT ["bash", "entry"]
+
+ADD entry.sh entry.sh
+CMD ./entry.sh
