@@ -26,4 +26,4 @@ RUN deps='curl ca-certificates' && \
 
 # Start script
 ADD entry entry
-ENTRYPOINT ["bash", "entry"]
+CMD ["bash","entry"]
