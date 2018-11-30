@@ -1,18 +1,23 @@
-FROM golang:1.10.3 as builder
+FROM golang:1.11.2 as builder
 RUN curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-RUN go get github.com/scrapinghub/Burrow
+RUN mkdir -p /go/src/github.com/scrapinghub && \
+    cd /go/src/github.com/scrapinghub && \
+    git clone --depth=1 --branch=fix-pid-check https://github.com/scrapinghub/Burrow.git
 WORKDIR /go/src/github.com/scrapinghub/Burrow
 
-RUN git fetch origin \
-    && git checkout fix-pid-check
-RUN dep ensure \
-    && go install
+RUN dep ensure && \
+    go build
 
-FROM alpine:3.7
-CMD ["/usr/bin/Burrow", "-config-dir", "/etc/burrow"]
+FROM alpine:3.8
+ENTRYPOINT ["/entry.sh"]
+ARG LIBC_VERSION=2.28-r0
 
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
-    wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.27-r0/glibc-2.27-r0.apk && \
-    apk add glibc-2.27-r0.apk
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget -q -O /tmp/glibc-${LIBC_VERSION}.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${LIBC_VERSION}/glibc-${LIBC_VERSION}.apk && \
+    apk add /tmp/glibc-${LIBC_VERSION}.apk && \
+    rm -f /tmp/glibc-${LIBC_VERSION}.apk
 
-COPY --from=builder /go/bin/Burrow /usr/bin/Burrow
+COPY entry.sh /entry.sh
+# TO invalidate the cache for the COPY statement below
+ENV BUILDDATE=20181130
+COPY --from=builder /go/src/github.com/scrapinghub/Burrow/Burrow /usr/bin/Burrow
