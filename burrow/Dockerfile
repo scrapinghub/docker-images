@@ -1,9 +1,9 @@
 FROM golang:1.11.2 as builder
 RUN curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-RUN mkdir -p /go/src/github.com/scrapinghub && \
-    cd /go/src/github.com/scrapinghub && \
-    git clone --depth=1 --branch=fix-pid-check https://github.com/scrapinghub/Burrow.git
-WORKDIR /go/src/github.com/scrapinghub/Burrow
+RUN mkdir -p /go/src/github.com/linkedin && \
+    cd /go/src/github.com/linkedin && \
+    git clone --depth=1 https://github.com/linkedin/Burrow.git
+WORKDIR /go/src/github.com/linkedin/Burrow
 
 RUN dep ensure && \
     go build
@@ -19,5 +19,5 @@ RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/s
 
 COPY entry.sh /entry.sh
 # TO invalidate the cache for the COPY statement below
-ENV BUILDDATE=20181130
-COPY --from=builder /go/src/github.com/scrapinghub/Burrow/Burrow /usr/bin/Burrow
+ENV BUILDDATE=20181201
+COPY --from=builder /go/src/github.com/linkedin/Burrow/Burrow /usr/bin/Burrow
