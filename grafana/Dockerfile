@@ -31,7 +31,6 @@ RUN grafana-cli plugins install jdbranham-diagram-panel
 RUN grafana-cli plugins install natel-discrete-panel
 RUN grafana-cli plugins install abhisant-druid-datasource
 RUN grafana-cli plugins install larona-epict-panel
-RUN grafana-cli plugins install grafana-example-app
 RUN grafana-cli plugins install ayoungprogrammer-finance-datasource
 RUN grafana-cli plugins install grafana-influxdb-flux-datasource
 RUN grafana-cli plugins install citilogics-geoloop-panel
