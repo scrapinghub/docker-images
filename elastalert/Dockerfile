@@ -23,6 +23,11 @@ RUN set -x \
 # Install elastalert
 RUN pip install elastalert==0.2.1
 
+# The ElastAlert version pinned before uses elasticsearch==7 which is not
+# fully compatible with Elasticsearch 5. `elasticsearch` library should
+# match the version of the Elasticsearch cluster when possible.
+RUN pip install --force-reinstall 'elasticsearch>=5.0.0,<6.0.0'
+
 COPY docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
