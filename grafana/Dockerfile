@@ -31,7 +31,6 @@ RUN grafana-cli plugins install jdbranham-diagram-panel
 RUN grafana-cli plugins install natel-discrete-panel
 RUN grafana-cli plugins install abhisant-druid-datasource
 RUN grafana-cli plugins install larona-epict-panel
-RUN grafana-cli plugins install grafana-example-app
 RUN grafana-cli plugins install ayoungprogrammer-finance-datasource
 RUN grafana-cli plugins install grafana-influxdb-flux-datasource
 RUN grafana-cli plugins install citilogics-geoloop-panel
@@ -99,3 +98,4 @@ RUN grafana-cli plugins install fatcloud-windrose-panel
 RUN grafana-cli plugins install grafana-worldmap-panel
 RUN grafana-cli plugins install raintank-worldping-app
 RUN grafana-cli plugins install alexanderzobnin-zabbix-app
+RUN grafana-cli plugins install doitintl-bigquery-datasource
