@@ -98,3 +98,4 @@ RUN grafana-cli plugins install fatcloud-windrose-panel
 RUN grafana-cli plugins install grafana-worldmap-panel
 RUN grafana-cli plugins install raintank-worldping-app
 RUN grafana-cli plugins install alexanderzobnin-zabbix-app
+RUN grafana-cli plugins install doitintl-bigquery-datasource
