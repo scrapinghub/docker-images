@@ -8,7 +8,7 @@ ENV SPARK_HOME=/opt/spark \
     PYTHONPATH=/opt/spark/python:/opt/spark/python/lib/py4j-0.10.7-src.zip
 
 RUN mkdir -p /opt/spark && \
-    curl -sSL -o - https://downloads.apache.org/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.6.tgz \
+    curl -sSL -o - https://downloads.apache.org/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz \
          | tar xzf - --strip-components=1 -C /opt/spark
 
 RUN apt-get update -qq && \
@@ -22,19 +22,3 @@ RUN mkdir -p /etc/hadoop/conf
 ADD core-site.xml hdfs-site.xml /etc/hadoop/conf/
 
 ADD spark-env.sh spark-defaults.conf /opt/spark/conf/
-
-# Clean up for docker squash
-# See https://github.com/goldmann/docker-squash
-RUN rm -rf \
-    /root/.cache \
-    /root/.npm \
-    /root/.pip \
-    /usr/local/share/doc \
-    /usr/share/doc \
-    /usr/share/man \
-    /usr/share/vim/vim74/doc \
-    /usr/share/vim/vim74/lang \
-    /usr/share/vim/vim74/spell/en* \
-    /usr/share/vim/vim74/tutor \
-    /var/lib/apt/lists/* \
-    /tmp/*
