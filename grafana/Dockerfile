@@ -1,4 +1,4 @@
-FROM grafana/grafana:6.5.0
+FROM grafana/grafana:7.2.0
 
 RUN grafana-cli plugins install satellogic-3d-globe-panel
 RUN grafana-cli plugins install ryantxu-ajax-panel
