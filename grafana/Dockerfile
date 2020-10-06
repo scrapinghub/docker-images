@@ -6,7 +6,7 @@ USER root
 # Install all available plugins
 RUN \
   apk add curl jq && \
-  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | jq '.items[] | select(.internal == false) | .slug' | tr -d '"' | sort); \
+  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | jq '.items[] | select(.internal == false) | select(.slug != "grafana-image-renderer") | .slug' | tr -d '"' | sort); \
       do grafana-cli plugins install $plugin; \
   done
 
