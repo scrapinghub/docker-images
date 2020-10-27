@@ -1,3 +1,5 @@
+ARG GF_INSTALL_IMAGE_RENDERER_PLUGIN=true
+
 FROM grafana/grafana:7.2.0
 
 # Use root to install
