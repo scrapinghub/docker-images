@@ -18,15 +18,13 @@ RUN \
     apk --no-cache  upgrade && \
     apk add --no-cache udev ttf-opensans chromium && \
     rm -rf /tmp/* && \
-    rm -rf /usr/share/grafana/tools/phantomjs; \
-fi
+    rm -rf /usr/share/grafana/tools/phantomjs;
 
 ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
 
 RUN \
     grafana-cli \
-        plugins install grafana-image-renderer; \
-fi
+        plugins install grafana-image-renderer;
 
 # Run as regular user
 USER grafana
