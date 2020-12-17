@@ -3,6 +3,11 @@ FROM grafana/grafana:7.3.6
 # Use root to install
 USER root
 
+RUN \
+    apk update && \
+    apk add ca-certificates wget && \
+    update-ca-certificates
+
 # Install all available plugins
 RUN \
   apk add curl jq && \
@@ -26,10 +31,10 @@ RUN \
     grafana-cli \
         plugins install grafana-image-renderer;
 
-ADD https://github.com/doitintl/bigquery-grafana/releases/download/2.0.1/doitintl-bigquery-datasource-2.0.1.zip /tmp/doitintl-bigquery-datasource.zip
-
 RUN \
-  unzip /tmp/doitintl-bigquery-datasource.zip -d /var/lib/grafana/plugins/doitintl-bigquery-datasource \
+  mkdir -p /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
+  wget -O /tmp/doitintl-bigquery-datasource.zip https://github.com/doitintl/bigquery-grafana/releases/download/2.0.1/doitintl-bigquery-datasource-2.0.1.zip && \
+  unzip /tmp/doitintl-bigquery-datasource.zip -d /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
   rm /tmp/doitintl-bigquery-datasource.zip
 
 # Run as regular user
