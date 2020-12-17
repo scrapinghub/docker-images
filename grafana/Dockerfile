@@ -1,4 +1,4 @@
-FROM grafana/grafana:7.2.0
+FROM grafana/grafana:7.3.6
 
 # Use root to install
 USER root
@@ -6,7 +6,7 @@ USER root
 # Install all available plugins
 RUN \
   apk add curl jq && \
-  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | jq '.items[] | select(.internal == false) | select(.slug != "grafana-image-renderer") | .slug' | tr -d '"' | sort); \
+  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | jq '.items[] | select(.internal == false) | select(.slug != "grafana-image-renderer" and .slug != "doitintl-bigquery-datasource") | .slug' | tr -d '"' | sort); \
       do grafana-cli plugins install $plugin; \
   done
 
@@ -25,6 +25,12 @@ ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
 RUN \
     grafana-cli \
         plugins install grafana-image-renderer;
+
+ADD https://github.com/doitintl/bigquery-grafana/releases/download/2.0.1/doitintl-bigquery-datasource-2.0.1.zip /tmp/doitintl-bigquery-datasource.zip
+
+RUN \
+  unzip /tmp/doitintl-bigquery-datasource.zip -d /var/lib/grafana/plugins/doitintl-bigquery-datasource \
+  rm /tmp/doitintl-bigquery-datasource.zip
 
 # Run as regular user
 USER grafana
