@@ -12,12 +12,13 @@ RUN apt-get update -qq && \
     curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
     apt-get install -y python3.9-distutils && \
     python3.9 /tmp/get-pip.py && rm /tmp/get-pip.py && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.9 3
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.9 3 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 3
 
 # Maven
-RUN curl -sSL -o - http://www.eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
+RUN curl -sSL -o - https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz \
     | tar xzf - -C /usr/local/ \
-    && ln -sf /usr/local/apache-maven-3.6.3/bin/mvn /usr/bin/mvn
+    && ln -sf /usr/local/apache-maven-3.8.1/bin/mvn /usr/bin/mvn
 
 # Zulu Java 11
 # https://docs.azul.com/zulu/zuludocs/#ZuluUserGuide/InstallingZulu/InstallOnLinuxUsingAPTRepository.htm
