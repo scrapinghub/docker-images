@@ -4,8 +4,7 @@ FROM grafana/grafana:7.3.6
 USER root
 
 RUN \
-    apk update && \
-    apk add ca-certificates wget && \
+    apk add --no-cache ca-certificates wget && \
     update-ca-certificates
 
 # Install all available plugins
