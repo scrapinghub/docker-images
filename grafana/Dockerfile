@@ -10,29 +10,37 @@ RUN apk add --quiet --no-cache \
     ca-certificates wget curl jq udev ttf-opensans chromium; \
     update-ca-certificates;
 
-# Install all available plugins
-RUN \
-  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | \
-    jq '.items[] | select(.internal == false) | select(.slug != "grafana-image-renderer" and .slug != "doitintl-bigquery-datasource") | .slug' \
-    | tr -d '"' | sort); \
-      do \
-      echo "${plugin}"; \
-      grafana-cli plugins install "${plugin}" || echo "failed ${plugin}"; \
-  done
 
-# Install Image Renderer plugin
-RUN rm -vrf /usr/share/grafana/tools/phantomjs
+# list of existing plugins
+# https://grafana.net/api/plugins?orderBy=name
+ENV PLUGINS="\
+alexanderzobnin-zabbix-app \
+doitintl-bigquery-datasource \
+grafana-azure-data-explorer-datasource \
+grafana-github-datasource \
+grafana-googlesheets-datasource \
+grafana-image-renderer \
+grafana-iot-sitewise-datasource \
+grafana-strava-datasource \
+grafana-timestream-datasource \
+grafana-x-ray-datasource \
+marcusolsson-csv-datasource \
+oci-logs-datasource \
+oci-metrics-datasource \
+redis-datasource \
+sbueringer-consul-datasource \
+vertamedia-clickhouse-datasource \
+vertica-grafana-datasource \
+"
 
 ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
 
-RUN grafana-cli \
-        plugins install grafana-image-renderer;
-
 RUN \
-  mkdir -p /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
-  wget -O /tmp/doitintl-bigquery-datasource.zip https://github.com/doitintl/bigquery-grafana/releases/download/2.0.1/doitintl-bigquery-datasource-2.0.1.zip && \
-  unzip /tmp/doitintl-bigquery-datasource.zip -d /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
-  rm /tmp/doitintl-bigquery-datasource.zip
+  for plugin in ${PLUGINS}; do \
+      grafana-cli plugins install "${plugin}" | \
+        grep '^from:' || \
+            { echo "failed ${plugin}"; exit 1; }; \
+  done
 
 # Run as regular user
 USER grafana
