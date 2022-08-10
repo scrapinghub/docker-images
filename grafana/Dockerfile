@@ -15,8 +15,8 @@ RUN apk add --quiet --no-cache \
 # https://grafana.net/api/plugins?orderBy=name
 ENV PLUGINS="\
 alexanderzobnin-zabbix-app \
-doitintl-bigquery-datasource \
 grafana-azure-data-explorer-datasource \
+grafana-bigquery-datasource \
 grafana-github-datasource \
 grafana-googlesheets-datasource \
 grafana-image-renderer \
