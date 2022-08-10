@@ -1,4 +1,4 @@
-FROM grafana/grafana:7.3.6
+FROM grafana/grafana:9.0.6
 
 SHELL [ "/usr/bin/env", "bash", "-ueo", "pipefail", "-c"]
 
@@ -38,7 +38,7 @@ ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
 RUN \
   for plugin in ${PLUGINS}; do \
       grafana-cli plugins install "${plugin}" | \
-        grep '^from:' || \
+        grep '^✔ Downloaded.*successfully' || \
             { echo "failed ${plugin}"; exit 1; }; \
   done
 
