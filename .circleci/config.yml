@@ -1,0 +1,33 @@
+version: 2
+
+jobs:
+  build-and-publish:
+    docker:
+      - image: cimg/python:3.7
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Publish Grafana Docker Image
+          command: |
+            set -ueo pipefail
+            cd grafana
+            . .env
+            export GRAFANA_VERSION
+            TARGET="images.scrapinghub.com/docker-images/grafana:${GRAFANA_VERSION}-${CIRCLE_BRANCH}"
+
+            docker login \
+              -u "${DOCKER_USER}" \
+              -p "${DOCKER_PASS}" \
+              "${TARGET%%/*}"
+            docker build --build-arg GRAFANA_VERSION -t "${TARGET}" .
+            docker push "${TARGET}"
+
+workflows:
+  version: 2
+  build-and-publish-workflow:
+    jobs:
+      - build-and-publish:
+          context:
+            - Internal
