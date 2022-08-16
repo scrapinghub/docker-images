@@ -1,4 +1,5 @@
-FROM grafana/grafana:8.5.5
+ARG GRAFANA_VERSION
+FROM "grafana/grafana:${GRAFANA_VERSION}"
 
 SHELL [ "/usr/bin/env", "bash", "-ueo", "pipefail", "-c"]
 

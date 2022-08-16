@@ -2,7 +2,11 @@ version: "3.3"
 services:
   grafana:
     image: zyte/grafana:latest
-    build: ./
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        GRAFANA_VERSION: "${GRAFANA_VERSION}"
     volumes:
       - ./conf/grafana.ini:/etc/grafana/grafana.ini:rw
     ports:
