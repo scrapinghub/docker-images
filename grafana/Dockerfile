@@ -28,7 +28,6 @@ marcusolsson-csv-datasource \
 oci-logs-datasource \
 oci-metrics-datasource \
 redis-datasource \
-sbueringer-consul-datasource \
 vertamedia-clickhouse-datasource \
 vertica-grafana-datasource \
 "
@@ -39,6 +38,11 @@ RUN \
         grep '^✔ Downloaded.*successfully' || \
             { echo "failed ${plugin}"; exit 1; }; \
   done
+
+# workaround https://github.com/sbueringer/grafana-consul-datasource/issues/29
+RUN grafana-cli \
+        --pluginUrl https://github.com/sbueringer/grafana-consul-datasource/releases/download/v0.2.1/sbueringer-consul-datasource-0.2.1.zip \
+        plugins install sbueringer-consul-datasource
 
 # picking upstream Grafana Image Renderer because it can be installed without chromium
 ENV GF_PLUGIN_RENDERING_CHROME_BIN="/usr/bin/chromium-browser"
