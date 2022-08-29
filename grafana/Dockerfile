@@ -20,7 +20,6 @@ grafana-azure-data-explorer-datasource \
 grafana-bigquery-datasource \
 grafana-github-datasource \
 grafana-googlesheets-datasource \
-grafana-image-renderer \
 grafana-iot-sitewise-datasource \
 grafana-strava-datasource \
 grafana-timestream-datasource \
@@ -34,14 +33,18 @@ vertamedia-clickhouse-datasource \
 vertica-grafana-datasource \
 "
 
-ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
-
 RUN \
   for plugin in ${PLUGINS}; do \
       grafana-cli plugins install "${plugin}" | \
         grep '^✔ Downloaded.*successfully' || \
             { echo "failed ${plugin}"; exit 1; }; \
   done
+
+# picking upstream Grafana Image Renderer because it can be installed without chromium
+ENV GF_PLUGIN_RENDERING_CHROME_BIN="/usr/bin/chromium-browser"
+RUN grafana-cli \
+        --pluginUrl https://github.com/grafana/grafana-image-renderer/releases/latest/download/plugin-linux-x64-glibc-no-chromium.zip \
+        plugins install grafana-image-renderer
 
 # Run as regular user
 USER grafana
