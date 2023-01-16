@@ -1,0 +1,18 @@
+FROM erlang:25-alpine as erlang
+
+FROM docker:20.10.22-dind-alpine3.17
+
+RUN apk update && apk --no-cache --update add \
+    py3-pip \
+    python3 \
+    make \
+    bash \
+    git \
+    curl \
+    lksctp-tools \
+    ca-certificates
+
+COPY --from=erlang /usr/local/lib/erlang /usr/local/lib/erlang
+COPY --from=erlang /usr/local/bin/rebar3 /usr/local/bin/rebar3
+
+ENV PATH="/usr/local/lib/erlang/bin:$PATH"
