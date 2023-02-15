@@ -1,5 +1,3 @@
-FROM erlang:25-alpine as erlang
-
 FROM docker:20.10.22-dind-alpine3.17
 
 RUN apk update && apk --no-cache --update add \
@@ -10,9 +8,10 @@ RUN apk update && apk --no-cache --update add \
     git \
     curl \
     lksctp-tools \
-    ca-certificates
+    ca-certificates \
+    erlang
 
-COPY --from=erlang /usr/local/lib/erlang /usr/local/lib/erlang
-COPY --from=erlang /usr/local/bin/rebar3 /usr/local/bin/rebar3
-
-ENV PATH="/usr/local/lib/erlang/bin:$PATH"
+RUN curl -s -L \
+    -o /usr/local/bin/rebar3 \
+    https://github.com/erlang/rebar3/releases/download/3.20.0/rebar3 && \
+    chmod +x /usr/local/bin/rebar3
