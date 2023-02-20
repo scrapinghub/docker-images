@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  grafana:
+    image: zyte/grafana:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        GRAFANA_VERSION: "${GRAFANA_VERSION}"
+    volumes:
+      - ./conf/grafana.ini:/etc/grafana/grafana.ini:rw
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    restart: on-failure
+    volumes:
+      - ./testdata/grafana.sql:/docker-entrypoint-initdb.d/grafana.sql:ro
+    ports:
+      - 33060:33060
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 10s
+      timeout: 1s
+      retries: 6
+      start_period: 60s
+    environment:
+      MYSQL_ROOT_PASSWORD: grafana
+      MYSQL_PASSWORD: grafana
+      MYSQL_USER: grafana
+      MYSQL_DATABASE: grafana

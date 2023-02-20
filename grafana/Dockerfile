@@ -1,41 +1,54 @@
-FROM grafana/grafana:7.3.6
+ARG GRAFANA_VERSION
+FROM "grafana/grafana:${GRAFANA_VERSION}"
+
+SHELL [ "/usr/bin/env", "bash", "-ueo", "pipefail", "-c"]
 
 # Use root to install
 USER root
 
-RUN \
-    apk update && \
-    apk add ca-certificates wget && \
-    update-ca-certificates
+RUN apk --no-cache upgrade
+RUN apk add --quiet --no-cache \
+    ca-certificates wget curl jq udev ttf-opensans chromium; \
+    update-ca-certificates;
 
-# Install all available plugins
+
+# list of existing plugins
+# https://grafana.net/api/plugins?orderBy=name
+ENV PLUGINS="\
+alexanderzobnin-zabbix-app \
+grafana-azure-data-explorer-datasource \
+grafana-bigquery-datasource \
+grafana-github-datasource \
+grafana-googlesheets-datasource \
+grafana-iot-sitewise-datasource \
+grafana-strava-datasource \
+grafana-timestream-datasource \
+grafana-x-ray-datasource \
+marcusolsson-csv-datasource \
+oci-logs-datasource \
+oci-metrics-datasource \
+redis-datasource \
+vertamedia-clickhouse-datasource \
+vertica-grafana-datasource \
+"
+
 RUN \
-  apk add curl jq && \
-  for plugin in $(curl -s https://grafana.net/api/plugins?orderBy=name | jq '.items[] | select(.internal == false) | select(.slug != "grafana-image-renderer" and .slug != "doitintl-bigquery-datasource") | .slug' | tr -d '"' | sort); \
-      do grafana-cli plugins install $plugin; \
+  for plugin in ${PLUGINS}; do \
+      grafana-cli plugins install "${plugin}" | \
+        grep '^✔ Downloaded.*successfully' || \
+            { echo "failed ${plugin}"; exit 1; }; \
   done
 
-# Install Image Renderer plugin
-RUN \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories && \
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk --no-cache  upgrade && \
-    apk add --no-cache udev ttf-opensans chromium && \
-    rm -rf /tmp/* && \
-    rm -rf /usr/share/grafana/tools/phantomjs;
+# workaround https://github.com/sbueringer/grafana-consul-datasource/issues/29
+RUN grafana-cli \
+        --pluginUrl https://github.com/sbueringer/grafana-consul-datasource/releases/download/v0.2.1/sbueringer-consul-datasource-0.2.1.zip \
+        plugins install sbueringer-consul-datasource
 
-ENV GF_RENDERER_PLUGIN_CHROME_BIN="/usr/bin/chromium-browser"
-
-RUN \
-    grafana-cli \
-        plugins install grafana-image-renderer;
-
-RUN \
-  mkdir -p /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
-  wget -O /tmp/doitintl-bigquery-datasource.zip https://github.com/doitintl/bigquery-grafana/releases/download/2.0.1/doitintl-bigquery-datasource-2.0.1.zip && \
-  unzip /tmp/doitintl-bigquery-datasource.zip -d /var/lib/grafana/plugins/doitintl-bigquery-datasource && \
-  rm /tmp/doitintl-bigquery-datasource.zip
+# picking upstream Grafana Image Renderer because it can be installed without chromium
+ENV GF_PLUGIN_RENDERING_CHROME_BIN="/usr/bin/chromium-browser"
+RUN grafana-cli \
+        --pluginUrl https://github.com/grafana/grafana-image-renderer/releases/latest/download/plugin-linux-x64-glibc-no-chromium.zip \
+        plugins install grafana-image-renderer
 
 # Run as regular user
 USER grafana
