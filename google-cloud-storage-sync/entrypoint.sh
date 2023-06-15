@@ -8,6 +8,12 @@ then
     exit 200
 fi
 
+if ! [ -d /workspace ]
+then
+    echo "/workspace dir is not mounted"
+    exit 200
+fi
+
 # Activate service account through json file
 gcloud auth activate-service-account --key-file=${SERVICE_ACCOUNT}
 
@@ -21,10 +27,12 @@ fi
 # Continuous synchronization
 #
 while :; do
+    echo "sync with GCS started"
     # Synchronize workspace stored in bucket to our local folder
     # and fix permissions (in case there were some issues)
     gsutil -q -m rsync -P -r gs://${GCS_BUCKET_PATH} /workspace/
     chown --recursive 33:33 /workspace/*
 
+    echo "sync completed. wait 10 min until next sync"
     sleep 600
 done
