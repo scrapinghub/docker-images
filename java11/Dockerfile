@@ -1,34 +1,33 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    JAVA_HOME=/usr/lib/jvm/zulu-11-amd64
+    JAVA_HOME=/usr/lib/jvm/zulu11
 
 # python3 (and set it as default)
 RUN apt-get update -qq && \
     apt-get install -qy software-properties-common curl vim && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     apt-get update -qq && \
-    apt-get install -y python3.9 python3.9-dev libpython3.9-dev && \
+    apt-get install -y python3.12 python3.12-dev libpython3.12-dev && \
     curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    apt-get install -y python3.9-distutils && \
-    python3.9 /tmp/get-pip.py && rm /tmp/get-pip.py && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.9 3 && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 3
+    apt-get install -y python3.12-distutils && \
+    python3.12 /tmp/get-pip.py && rm /tmp/get-pip.py && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.12 3 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 3
 
 # Maven
-RUN curl -sSL -o - https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz \
+RUN curl -k -sSL -o - https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz \
     | tar xzf - -C /usr/local/ \
-    && ln -sf /usr/local/apache-maven-3.8.1/bin/mvn /usr/bin/mvn
+    && ln -sf /usr/local/apache-maven-3.9.4/bin/mvn /usr/bin/mvn
 
 # Zulu Java 11
 # https://docs.azul.com/zulu/zuludocs/#ZuluUserGuide/InstallingZulu/InstallOnLinuxUsingAPTRepository.htm
 RUN apt-get update -qq && \
-    apt-get install -y curl python apt-transport-https && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9 && \
-    echo "deb http://repos.azulsystems.com/ubuntu stable main" > /etc/apt/sources.list.d/zulu.list && \
-    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    apt-get install -y curl apt-transport-https && \
+    curl -s https://repos.azul.com/azul-repo.key | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" > /etc/apt/sources.list.d/zulu.list && \
     apt-get update -qq && \
-    apt-get install -y zulu-11
+    apt-get install -y zulu11-jdk
 
 # Install lein
 RUN curl -sSL https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein -o /usr/bin/lein && \
