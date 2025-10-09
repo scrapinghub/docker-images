@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     JAVA_HOME=/usr/lib/jvm/zulu11
@@ -10,15 +10,15 @@ RUN apt-get update -qq && \
     apt-get update -qq && \
     apt-get install -y python3.12 python3.12-dev libpython3.12-dev && \
     curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
-    apt-get install -y python3.12-distutils && \
+    apt-get install -y python3-setuptools && \
     python3.12 /tmp/get-pip.py && rm /tmp/get-pip.py && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3.12 3 && \
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 3
 
 # Maven
-RUN curl -k -sSL -o - https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz \
+RUN curl -k -sSL -o - https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz \
     | tar xzf - -C /usr/local/ \
-    && ln -sf /usr/local/apache-maven-3.9.4/bin/mvn /usr/bin/mvn
+    && ln -sf /usr/local/apache-maven-3.9.11/bin/mvn /usr/bin/mvn
 
 # Zulu Java 11
 # https://docs.azul.com/zulu/zuludocs/#ZuluUserGuide/InstallingZulu/InstallOnLinuxUsingAPTRepository.htm
